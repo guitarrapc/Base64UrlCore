@@ -9,7 +9,7 @@ using Xunit.Sdk;
 using Xunit;
 using System;
 
-namespace Base64Url.Tests
+namespace Base64Core.Tests
 {
     [System.Diagnostics.DebuggerStepThroughAttribute]
     [ContractVerification(false)]

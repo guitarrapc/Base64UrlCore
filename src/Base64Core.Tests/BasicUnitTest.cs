@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Base64Url.Tests
+namespace Base64Core.Tests
 {
     public class BasicUnitTest
     {

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base64Url", "Base64Url\Base64Url.csproj", "{A358D2B0-3510-434B-A228-F8D07877DE29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base64Core", "Base64Core\Base64Core.csproj", "{A358D2B0-3510-434B-A228-F8D07877DE29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base64Url.Tests", "..\Tests\Base64Url.Tests\Base64Url.Tests.csproj", "{84C741FE-280D-44BD-A2E2-8D6C51752037}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base64Core.Tests", "Base64Core.Tests\Base64Core.Tests.csproj", "{84C741FE-280D-44BD-A2E2-8D6C51752037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

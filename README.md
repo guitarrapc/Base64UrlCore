@@ -1,4 +1,4 @@
-## Base64Url
+## Base64Core
 
 Converting to, and from, [base64url](https://en.wikipedia.org/wiki/Base64#RFC_4648)
 
