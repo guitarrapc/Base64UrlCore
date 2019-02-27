@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Base64Core
+namespace Base64UrlCore
 {
     public static class Base64Url
     {

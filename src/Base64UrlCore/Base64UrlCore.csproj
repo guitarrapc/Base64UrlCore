@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>guitarrapc</Authors>
+    <Company />
+    <Summary>base64 encode/decode helper for .NET Core.</Summary>
+    <Description>$(Summary)</Description>
+    <PackageProjectUrl>https://github.com/Cysharp/MicroBatchFramework</PackageProjectUrl>
+    <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Base64, Base64Url, UTF8, Encoder, Decoder</PackageTags>
+  </PropertyGroup>
+
+</Project>

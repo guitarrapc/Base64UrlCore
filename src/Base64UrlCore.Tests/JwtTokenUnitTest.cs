@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Base64Core.Tests
+namespace Base64UrlCore.Tests
 {
     public class JwtTokenUnitTest
     {
