@@ -2,15 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>guitarrapc</Authors>
     <Company />
     <Summary>base64 encode/decode for URL applications.</Summary>
     <Description>$(Summary)</Description>
-    <PackageProjectUrl>https://github.com/Cysharp/MicroBatchFramework</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/guitarrapc/Base64UrlCore</PackageProjectUrl>
     <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Base64, Base64Url, Base64Encode, Base64Decode, UTF8</PackageTags>
+    <PackageTags>Base64;Base64Url;Base64Encode;Base64Decode;UTF8</PackageTags>
+    <PackageLicenseUrl>https://github.com/guitarrapc/Base64UrlCore/blob/master/LICENSE</PackageLicenseUrl>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
 
 </Project>
