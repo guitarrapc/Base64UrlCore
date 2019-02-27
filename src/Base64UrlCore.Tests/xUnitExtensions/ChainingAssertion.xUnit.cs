@@ -157,13 +157,17 @@ namespace Base64UrlCore.Tests
         /// <summary>Assert.Same</summary>
         public static void IsSameReferenceAs<T>(this T actual, T expected)
         {
+#pragma warning disable xUnit2005 // Do not use identity check on value type
             Assert.Same(expected, actual);
+#pragma warning restore xUnit2005 // Do not use identity check on value type
         }
 
         /// <summary>Assert.NotSame</summary>
         public static void IsNotSameReferenceAs<T>(this T actual, T notExpected)
         {
+#pragma warning disable xUnit2005 // Do not use identity check on value type
             Assert.NotSame(notExpected, actual);
+#pragma warning restore xUnit2005 // Do not use identity check on value type
         }
 
         /// <summary>Assert.IsType</summary>
