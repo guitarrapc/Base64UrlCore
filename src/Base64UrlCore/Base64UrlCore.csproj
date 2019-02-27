@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>guitarrapc</Authors>
     <Company />
-    <Summary>base64url encode/decode without thinking padding or not, and string, binary input/output.</Summary>
+    <Summary>base64 encode/decode for URL applications.</Summary>
     <Description>$(Summary)</Description>
     <PackageProjectUrl>https://github.com/Cysharp/MicroBatchFramework</PackageProjectUrl>
     <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>

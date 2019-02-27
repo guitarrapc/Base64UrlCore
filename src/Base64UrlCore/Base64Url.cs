@@ -25,7 +25,7 @@ namespace Base64UrlCore
         /// <returns></returns>
         public static string Encode(string text, Encoding enc)
         {
-            var bytes = enc.GetBytes(FromBase64(text));
+            var bytes = enc.GetBytes(Escape(text));
             return Encode(bytes);
         }
 
@@ -57,7 +57,7 @@ namespace Base64UrlCore
         /// <returns></returns>
         public static byte[] EncodeBytes(string text, Encoding enc)
         {
-            var bytes = enc.GetBytes(FromBase64(text));
+            var bytes = enc.GetBytes(Escape(text));
             return bytes;
         }
 
@@ -79,7 +79,7 @@ namespace Base64UrlCore
         /// <returns></returns>
         public static string Decode(string text, Encoding enc)
         {
-            var base64 = Convert.FromBase64String(ToBase64(text));
+            var base64 = Convert.FromBase64String(Unescape(text));
             return Decode(base64, enc);
         }
 
@@ -112,7 +112,7 @@ namespace Base64UrlCore
         /// <returns></returns>
         public static byte[] DecodeBytes(string text, Encoding enc)
         {
-            var base64 = Convert.FromBase64String(ToBase64(text));
+            var base64 = Convert.FromBase64String(Unescape(text));
             return base64;
         }
 
@@ -121,7 +121,7 @@ namespace Base64UrlCore
         /// </summary>
         /// <param name="base64Url"></param>
         /// <returns></returns>
-        public static string ToBase64(string base64Url)
+        public static string Unescape(string base64Url)
         {
             return PadString(base64Url)
                 .Replace("-", "+")
@@ -133,7 +133,7 @@ namespace Base64UrlCore
         /// </summary>
         /// <param name="base64"></param>
         /// <returns></returns>
-        public static string FromBase64(string base64)
+        public static string Escape(string base64)
         {
             return RemovePadding(base64)
                 .Replace("+", "-")
