@@ -8,29 +8,29 @@ namespace Base64UrlCore
         private static Encoding defaultEncoding = new UTF8Encoding(false);
 
         /// <summary>
-        /// Encode from plain text to Base64 url string
+        /// Encode from plain utf8string to Base64 url string
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="utf8string"></param>
         /// <returns></returns>
-        public static string Encode(string text)
+        public static string Encode(string utf8string)
         {
-            return Encode(text, defaultEncoding);
+            return Encode(utf8string, defaultEncoding);
         }
 
         /// <summary>
-        /// Encode from plain text to Base64 url string
+        /// Encode from plain utf8string to Base64 url string
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="utf8string"></param>
         /// <param name="enc"></param>
         /// <returns></returns>
-        public static string Encode(string text, Encoding enc)
+        public static string Encode(string utf8string, Encoding enc)
         {
-            var bytes = enc.GetBytes(Escape(text));
+            var bytes = enc.GetBytes(Encode(utf8string));
             return Encode(bytes);
         }
 
         /// <summary>
-        /// Encode from plain text bytes to Base64 url string
+        /// Encode from bytes to Base64 url string
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
@@ -39,47 +39,25 @@ namespace Base64UrlCore
             return Convert.ToBase64String(bytes);
         }
 
-        /// <summary>
-        /// Encode from plain text to Base64 url bytes
+         /// <summary>
+        /// Decode from Base64 url string to plain string
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="base64string"></param>
         /// <returns></returns>
-        public static byte[] EncodeBytes(string text)
+        public static string Decode(string base64string)
         {
-            return EncodeBytes(text, defaultEncoding);
-        }
-
-        /// <summary>
-        /// Encode from plain text to Base64 url bytes
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="enc"></param>
-        /// <returns></returns>
-        public static byte[] EncodeBytes(string text, Encoding enc)
-        {
-            var bytes = enc.GetBytes(Escape(text));
-            return bytes;
+            return Decode(base64string, defaultEncoding);
         }
 
         /// <summary>
         /// Decode from Base64 url string to plain string
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string Decode(string text)
-        {
-            return Decode(text, defaultEncoding);
-        }
-
-        /// <summary>
-        /// Decode from Base64 url string to plain string
-        /// </summary>
-        /// <param name="text"></param>
+        /// <param name="base64string"></param>
         /// <param name="enc"></param>
         /// <returns></returns>
-        public static string Decode(string text, Encoding enc)
+        public static string Decode(string base64string, Encoding enc)
         {
-            var base64 = Convert.FromBase64String(Unescape(text));
+            var base64 = Convert.FromBase64String(Unescape(base64string));
             return Decode(base64, enc);
         }
 
@@ -92,28 +70,6 @@ namespace Base64UrlCore
         public static string Decode(byte[] bytes, Encoding enc)
         {
             return enc.GetString(bytes);
-        }
-
-        /// <summary>
-        /// Decode from Base64 url string to plain bytes
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static byte[] DecodeBytes(string text)
-        {
-            return DecodeBytes(text, defaultEncoding);
-        }
-
-        /// <summary>
-        /// Decode from Base64 url string to plain bytes
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="enc"></param>
-        /// <returns></returns>
-        public static byte[] DecodeBytes(string text, Encoding enc)
-        {
-            var base64 = Convert.FromBase64String(Unescape(text));
-            return base64;
         }
 
         /// <summary>
