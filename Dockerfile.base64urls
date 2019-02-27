@@ -1,0 +1,31 @@
+FROM microsoft/dotnet:2.2-sdk-bionic AS build
+WORKDIR /app
+
+# restore
+WORKDIR /app/Base64UrlCore/
+COPY src/Base64UrlCore/Base64UrlCore.csproj ./
+RUN dotnet restore
+
+WORKDIR /app/base64urls/
+COPY src/base64urls/base64urls.csproj ./
+RUN dotnet restore
+
+# COPY
+WORKDIR /app/
+COPY src/. .
+
+# Build
+WORKDIR /app/Base64UrlCore/
+RUN dotnet build -c Release
+
+WORKDIR /app/base64urls/
+RUN dotnet build -c Release
+
+# publish
+WORKDIR /app/base64urls/
+RUN dotnet publish -c Release
+
+# pack
+WORKDIR /app/base64urls/
+VOLUME /app/base64urls/pack
+CMD ["dotnet", "pack", "--include-symbols", "-c", "Release", "-o", "pack"]

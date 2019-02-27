@@ -1,0 +1,7 @@
+.git
+appveyor.yml
+LICENSE
+README.md
+bin/
+obj/
+.vs/
