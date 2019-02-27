@@ -25,7 +25,7 @@ namespace Base64UrlCore
         /// <returns></returns>
         public static string Encode(string utf8string, Encoding enc)
         {
-            var bytes = enc.GetBytes(Encode(utf8string));
+            var bytes = enc.GetBytes(Escape(utf8string));
             return Encode(bytes);
         }
 
@@ -39,7 +39,7 @@ namespace Base64UrlCore
             return Convert.ToBase64String(bytes);
         }
 
-         /// <summary>
+        /// <summary>
         /// Decode from Base64 url string to plain string
         /// </summary>
         /// <param name="base64string"></param>
@@ -58,7 +58,18 @@ namespace Base64UrlCore
         public static string Decode(string base64string, Encoding enc)
         {
             var base64 = Convert.FromBase64String(Unescape(base64string));
-            return Decode(base64, enc);
+            return Decode(base64);
+        }
+
+        /// <summary>
+        /// Decode from Base64 url bytes to plain string
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="enc"></param>
+        /// <returns></returns>
+        public static string Decode(byte[] bytes)
+        {
+            return defaultEncoding.GetString(bytes);
         }
 
         /// <summary>
