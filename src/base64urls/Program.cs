@@ -94,11 +94,11 @@ namespace Base64UrlCore.Tool
         /// </summary>
         static void ShowHelp()
         {
-            Console.WriteLine("Usage: dotnet base64urls [-version] [-help] [encode|decode|escape|unescape] [args]");
-            Console.WriteLine("E.g., run this: dotnet base64urls decode QyMgaXMgYXdlc29tZQ==");
-            Console.WriteLine("E.g., run this: dotnet base64urls encode \"C# is awesome.\"");
-            Console.WriteLine("E.g., run this: dotnet base64urls escape \"This+is/goingto+escape==\"");
-            Console.WriteLine("E.g., run this: dotnet base64urls unescape \"This-is_goingto-escape\"");
+            Console.WriteLine("Usage: dotnet base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
+            Console.WriteLine("E.g., run this: base64urls decode QyMgaXMgYXdlc29tZQ==");
+            Console.WriteLine("E.g., run this: base64urls encode \"C# is awesome.\"");
+            Console.WriteLine("E.g., run this: base64urls escape \"This+is/goingto+escape==\"");
+            Console.WriteLine("E.g., run this: base64urls unescape \"This-is_goingto-escape\"");
         }
     }
 }
