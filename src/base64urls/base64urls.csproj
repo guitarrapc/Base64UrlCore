@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <RootNamespace>Base64UrlCore.Tool</RootNamespace>
+    <PackAsTool>true</PackAsTool>
+    <PackageId>base64urls</PackageId>
+
+    <Authors>guitarrapc</Authors>
+    <Company />
+    <Summary>base64 encode/decode for URL applications. dotnet global tool of Base64UrlCore.</Summary>
+    <Description>$(Summary)</Description>
+    <PackageProjectUrl>https://github.com/guitarrapc/Base64UrlCore</PackageProjectUrl>
+    <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Base64;Base64Url;Base64Encode;Base64Decode;UTF8</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://github.com/guitarrapc/Base64UrlCore/blob/master/LICENSE</PackageLicenseUrl>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base64UrlCore\Base64UrlCore.csproj" />
+  </ItemGroup>
+
+</Project>
