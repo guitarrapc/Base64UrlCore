@@ -1,3 +1,4 @@
+using FluentAssertions;
 using System;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Base64UrlCore.Tests
         public void DecodeTest(string base64, string raw)
         {
             var decode = Base64Url.Decode(base64);
-            decode.Is(raw);
+            decode.Should().Be(raw);
         }
 
         [Theory]
@@ -38,7 +39,7 @@ namespace Base64UrlCore.Tests
         public void EncodeTest(string base64, string raw)
         {
             var encode = Base64Url.Encode(raw);
-            encode.Is(base64);
+            encode.Should().Be(base64);
         }
 
         [Theory]
@@ -53,7 +54,7 @@ namespace Base64UrlCore.Tests
         public void DecodePaddingMissAutoFixTest(string base64, string raw)
         {
             var decode = Base64Url.Decode(base64);
-            decode.Is(raw);
+            decode.Should().Be(raw);
         }
 
         [Theory]
@@ -61,7 +62,7 @@ namespace Base64UrlCore.Tests
         public void EscapeTest(string from, string to)
         {
             var encode = Base64Url.Escape(from);
-            encode.Is(to);
+            encode.Should().Be(to);
         }
 
         [Theory]
@@ -69,7 +70,7 @@ namespace Base64UrlCore.Tests
         public void UnescapeTest(string from, string to)
         {
             var encode = Base64Url.Unescape(from);
-            encode.Is(to);
+            encode.Should().Be(to);
         }
 
         [Theory]
@@ -80,7 +81,7 @@ namespace Base64UrlCore.Tests
         public void PaddingTest(string from, string to)
         {
             var encode = Base64Url.PadString(from);
-            encode.Is(to);
+            encode.Should().Be(to);
         }
 
         [Theory]
@@ -91,7 +92,7 @@ namespace Base64UrlCore.Tests
         public void RemovePaddingTest(string to, string from)
         {
             var encode = Base64Url.RemovePadding(from);
-            encode.Is(to);
+            encode.Should().Be(to);
         }
     }
 }

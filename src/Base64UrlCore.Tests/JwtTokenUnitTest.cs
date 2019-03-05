@@ -1,3 +1,4 @@
+using FluentAssertions;
 using System;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Base64UrlCore.Tests
         public void JWTHeaderDecode(string base64, string raw)
         {
             var decode = Base64Url.Decode(base64);
-            decode.Is(raw);
+            decode.Should().Be(raw);
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Base64UrlCore.Tests
         public void JWTPayloadDecode(string base64, string raw)
         {
             var decode = Base64Url.Decode(base64);
-            decode.Is(raw.Replace("\r", ""));
+            decode.Should().Be(raw.Replace("\r", ""));
         }
 
         [Theory]
@@ -53,10 +54,10 @@ namespace Base64UrlCore.Tests
         {
             var decode = Base64Url.Decode(base64);
             var bytes = new UTF8Encoding(false).GetBytes(decode);
-            bytes.Length.Is(length);
-            bytes.First().Is(first);
-            bytes.Skip(51).First().Is(fiftyOneth);
-            bytes.Last().Is(last);
+            bytes.Length.Should().Be(length);
+            bytes.First().Should().Be(first);
+            bytes.Skip(51).First().Should().Be(fiftyOneth);
+            bytes.Last().Should().Be(last);
         }
 
         [Theory]
@@ -66,7 +67,7 @@ namespace Base64UrlCore.Tests
         public void JwtHeaderEncode(string base64, string raw)
         {
             var encode = Base64Url.Encode(raw);
-            encode.Is(base64);
+            encode.Should().Be(base64);
         }
     }
 }

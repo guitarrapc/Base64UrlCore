@@ -1,3 +1,4 @@
+using FluentAssertions;
 using System;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Base64UrlCore.Tests
         [InlineData("--version", "fuga")]
         public void VersionArgsTest(params string[] args)
         {
-            HasHelpFlag(args, "-v", "-version").IsTrue();
+            HasHelpFlag(args, "-v", "-version").Should().BeTrue();
         }
 
         [Theory]
@@ -43,7 +44,7 @@ namespace Base64UrlCore.Tests
         [InlineData("--versions")]
         public void NotVersionArgsTest(params string[] args)
         {
-            HasHelpFlag(args, "-v", "-version").IsFalse();
+            HasHelpFlag(args, "-v", "-version").Should().BeFalse();
         }
 
         [Theory]
@@ -55,14 +56,14 @@ namespace Base64UrlCore.Tests
         [InlineData("--help", "fuga")]
         public void HelpArgsTest(params string[] args)
         {
-            HasHelpFlag(args, "-h", "-help").IsTrue();
+            HasHelpFlag(args, "-h", "-help").Should().BeTrue();
         }
 
         [Theory]
         [InlineData("--h")]
         public void NotHelpArgsTest(params string[] args)
         {
-            HasHelpFlag(args, "-h", "-help").IsFalse();
+            HasHelpFlag(args, "-h", "-help").Should().BeFalse();
         }
 
         [Theory]
@@ -74,7 +75,7 @@ namespace Base64UrlCore.Tests
         [InlineData("binarydecode", "\"C# is awesome.\"")]
         public void ValidArgsTest(params string[] args)
         {
-            IsValidFlag(args).IsTrue();
+            IsValidFlag(args).Should().BeTrue();
         }
 
         [Theory]
@@ -88,7 +89,7 @@ namespace Base64UrlCore.Tests
         [InlineData("foo", "bar", "baz")]
         public void InvalidArgsTest(params string[] args)
         {
-            IsValidFlag(args).IsFalse();
+            IsValidFlag(args).Should().BeFalse();
         }
 
         [Theory]
@@ -101,7 +102,7 @@ namespace Base64UrlCore.Tests
         [InlineData("none", Command.none)]
         public void FetchCommandTest(string command, Command expected)
         {
-            FetchCommand(command).Is(expected);
+            FetchCommand(command).Should().Be(expected);
         }
     }
 }
