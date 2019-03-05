@@ -18,17 +18,17 @@ namespace Base64UrlCore.Tool
         static void Main(string[] args)
         {
             // version -> help -> invalid -> command
-            if (HasHelpFlag(args, "-v", "-version"))
+            if (HasFlag(args, "v", "version"))
             {
                 ShowVersion();
                 return;
             }
-            if (HasHelpFlag(args, "-h", "-help"))
+            if (HasFlag(args, "h", "help"))
             {
                 ShowHelp();
                 return;
             }
-            if (!IsValidFlag(args))
+            if (!IsValidArguments(args))
             {
                 ShowError();
                 return;
@@ -65,8 +65,8 @@ namespace Base64UrlCore.Tool
             }
         }
 
-        static bool HasHelpFlag(string[] args, string shortName, string longName) => args.Length != 0 && (args.Contains(shortName) || args.Contains(longName) || args.Contains("-" + longName));
-        static bool IsValidFlag(string[] args) => args.Length == 2;
+        static bool HasFlag(string[] args, string shortName, string longName) => args.Length != 0 && (args.Contains("-" + shortName) || args.Contains("-" + longName) || args.Contains("--" + longName));
+        static bool IsValidArguments(string[] args) => args.Length == 2;
         static Command FetchCommand(string actual) => Enum.TryParse<Command>(actual, ignoreCase: true, result: out var command)
                 ? command
                 : Command.none;
