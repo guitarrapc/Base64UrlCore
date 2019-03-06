@@ -1,6 +1,5 @@
 ﻿using MicroBatchFramework;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +15,7 @@ namespace Base64UrlCore.Tool
         }
 
         /// <summary>
-        /// if args if empty, return 
+        /// override MicroBatchFramework's default command.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
