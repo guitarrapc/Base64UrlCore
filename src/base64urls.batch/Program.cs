@@ -11,6 +11,7 @@ namespace Base64UrlCore.Tool
     {
         static async Task Main(string[] args)
         {
+            // TODO: How to fallback if none of arg is match to command. E.G., `base64urls version`
             await new HostBuilder().RunBatchEngineAsync<Base64Batch>(ArgsInterceptor(args));
         }
 
