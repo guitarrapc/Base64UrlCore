@@ -30,7 +30,7 @@ namespace Base64UrlCore.Tool
             }
             if (!IsValidArguments(args))
             {
-                ShowError();
+                ShowHelp();
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace Base64UrlCore.Tool
                 switch (command)
                 {
                     case Command.none:
-                        ShowError();
+                        ShowHelp();
                         return;
                     case Command.decode:
                         Console.WriteLine(Base64Url.Decode(input));
@@ -83,18 +83,12 @@ namespace Base64UrlCore.Tool
             Console.WriteLine($"base64urls v{version}");
         }
 
-        static void ShowError()
-        {
-            Console.WriteLine("Missing required parameters, or command is invalid. Run like:");
-            ShowHelp();
-        }
-
         /// <summary>
         /// -h -help --help
         /// </summary>
         static void ShowHelp()
         {
-            Console.WriteLine("Usage: dotnet base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
+            Console.WriteLine("Usage: base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
             Console.WriteLine("E.g., run this: base64urls decode QyMgaXMgYXdlc29tZQ==");
             Console.WriteLine("E.g., run this: base64urls encode \"C# is awesome.\"");
             Console.WriteLine("E.g., run this: base64urls escape \"This+is/goingto+escape==\"");
