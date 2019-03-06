@@ -1,6 +1,8 @@
 ﻿using MicroBatchFramework;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -10,45 +12,60 @@ namespace Base64UrlCore.Tool
     {
         static async Task Main(string[] args)
         {
-            // TODO: override default error
-            // TODO: override default help message
-            // TODO: Is any simple way to provide unix style help: -version --version -v / -help --help -h
-            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
+            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(ArgsInterceptor(args));
+        }
+
+        /// <summary>
+        /// if args if empty, return 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        static string[] ArgsInterceptor(string[] args)
+        {
+            return !args.Any()
+                // MEMO: override default error
+                ? new[] { "-help" }
+                : args
+                    // MEMO: override default help message
+                    .Select(x => string.Equals("help", x, StringComparison.OrdinalIgnoreCase) ? "-help" : x)
+                    // MEMO: override default list message
+                    .Select(x => string.Equals("list", x, StringComparison.OrdinalIgnoreCase) ? "-help" : x)
+                    .ToArray();
         }
     }
 
     public class Base64Batch : BatchBase
-    {
-        [Command("encode")]
+    { 
+        [Command("encode", "encode input string to base64url")]
         public void Encode([Option(0)]string input) => Console.WriteLine(Base64Url.Encode(input));
 
-        [Command("decode")]
+        [Command("decode", "decode input base64url to string")]
         public void Decode([Option(0)]string input) => Console.WriteLine(Base64Url.Decode(input));
 
-        [Command("escape")]
+        [Command("escape", "escape base64 to base64url")]
         public void Escape([Option(0)]string input) => Console.WriteLine(Base64Url.Escape(input));
 
-        [Command("unescape")]
+        [Command("unescape", "unescape base64url to base64")]
         public void Unescape([Option(0)]string input) => Console.WriteLine(Base64Url.Unescape(input));
 
         /// <summary>
-        /// -v -version --version
+        /// Provide unix style command argument: -version --version -v
         /// </summary>
-        [Command("-v")]
+        [Command("-v", "show version")]
         public void Version1() => ShowVersion();
-        [Command("-version")]
+        [Command("-version", "show version")]
         public void Version2() => ShowVersion();
-        [Command("--version")]
+        [Command("--version", "show version")]
         public void Version3() => ShowVersion();
 
         /// <summary>
-        /// -h -help --help
+        /// Provide unix style command argument: -help --help -h
         /// </summary>
-        [Command("-h")]
+        [Command("-h", "show help")]
         public void Help1() => ShowHelp();
-        [Command("-help")]
+        [Command("-help", "show help")]
         public void Help2() => ShowHelp();
-        [Command("--help")]
+        [Command("--help", "show help")]
         public void Help3() => ShowHelp();
 
         private void ShowVersion()
@@ -62,7 +79,7 @@ namespace Base64UrlCore.Tool
 
         private void ShowHelp()
         {
-            Console.WriteLine("Usage: dotnet base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
+            Console.WriteLine("Usage: base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
             Console.WriteLine("E.g., run this: base64urls decode QyMgaXMgYXdlc29tZQ==");
             Console.WriteLine("E.g., run this: base64urls encode \"C# is awesome.\"");
             Console.WriteLine("E.g., run this: base64urls escape \"This+is/goingto+escape==\"");
