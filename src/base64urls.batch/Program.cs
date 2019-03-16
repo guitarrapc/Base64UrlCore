@@ -11,26 +11,12 @@ namespace Base64UrlCore.Tool
     {
         static async Task Main(string[] args)
         {
+            if (args == null || !args.Any())
+            {
+                args = new[] { "help" }.ToArray();
+            }
             // TODO: How to fallback if none of arg is match to command. E.G., `base64urls version`
-            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(ArgsInterceptor(args));
-        }
-
-        /// <summary>
-        /// override MicroBatchFramework's default command.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        static string[] ArgsInterceptor(string[] args)
-        {
-            return !args.Any()
-                // MEMO: override default error
-                ? new[] { "-help" }
-                : args
-                    // MEMO: override default help message
-                    .Select(x => string.Equals("help", x, StringComparison.OrdinalIgnoreCase) ? "-help" : x)
-                    // MEMO: override default list message
-                    .Select(x => string.Equals("list", x, StringComparison.OrdinalIgnoreCase) ? "-help" : x)
-                    .ToArray();
+            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
         }
     }
 
@@ -49,26 +35,10 @@ namespace Base64UrlCore.Tool
         public void Unescape([Option(0)]string input) => Console.WriteLine(Base64Url.Unescape(input));
 
         /// <summary>
-        /// Provide unix style command argument: -version --version -v
+        /// Provide unix style command argument: -version --version -v + version command
         /// </summary>
-        [Command("-v", "show version")]
-        public void Version1() => ShowVersion();
-        [Command("-version", "show version")]
-        public void Version2() => ShowVersion();
-        [Command("--version", "show version")]
-        public void Version3() => ShowVersion();
-
-        /// <summary>
-        /// Provide unix style command argument: -help --help -h
-        /// </summary>
-        [Command("-h", "show help")]
-        public void Help1() => ShowHelp();
-        [Command("-help", "show help")]
-        public void Help2() => ShowHelp();
-        [Command("--help", "show help")]
-        public void Help3() => ShowHelp();
-
-        private void ShowVersion()
+        [Command(new[] { "version", "-v", "-version", "--version" }, "show version")]
+        public void ShowVersion()
         {
             var version = Assembly.GetEntryAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
@@ -77,7 +47,11 @@ namespace Base64UrlCore.Tool
             Console.WriteLine($"base64urls v{version}");
         }
 
-        private void ShowHelp()
+        /// <summary>
+        /// Provide unix style command argument: -help --help -h + override default help / list
+        /// </summary>
+        [Command(new[] { "help", "list", "-h", "-help", "--help" }, "show help")]
+        public void ShowHelp()
         {
             Console.WriteLine("Usage: base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
             Console.WriteLine("E.g., run this: base64urls decode QyMgaXMgYXdlc29tZQ==");
