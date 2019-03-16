@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "base64urls.batch": {
+      "commandName": "Project",
+      "commandLineArgs": "unexpected"
+    }
+  }
+}
