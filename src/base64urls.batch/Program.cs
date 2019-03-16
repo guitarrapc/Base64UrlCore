@@ -9,9 +9,18 @@ namespace Base64UrlCore.Tool
 {
     class Program
     {
+        private static readonly string[] validCommand = new[]
+        {
+            "help", "list", "-h", "-help", "--help",
+            "version", "-v", "-version", "--version",
+            "encode",
+            "decode",
+            "escape",
+            "unescape",
+        };
         static async Task Main(string[] args)
         {
-            if (args == null || !args.Any())
+            if (args == null || !args.Any() || !validCommand.Contains(args[0]))
             {
                 args = new[] { "help" }.ToArray();
             }
