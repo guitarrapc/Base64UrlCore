@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Base64UrlCore\Base64UrlCore.csproj" />
+    <ProjectReference Include="..\..\src\Base64UrlCore\Base64UrlCore.csproj" />
   </ItemGroup>
 
 </Project>

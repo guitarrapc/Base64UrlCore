@@ -15,7 +15,7 @@ dotnet tool install -g base64urls
 ### Library
 
 ```bash
-Install-Package Base64UrlCore
+dotnet add package Base64UrlCore
 ```
 
 ## CLI Usage
@@ -114,6 +114,20 @@ Remove padding from encoded string.
 ```csharp
 Base64Url.RemovePadding("MQ==");
 // MQ
+```
+
+## Docker
+
+Library
+
+```
+docker build -t base64urlcore . -f Dockerfile.Base64UrlCore
+```
+
+global tool
+
+```
+docker build -t base64url . -f Dockerfile.base64urls
 ```
 
 ## License

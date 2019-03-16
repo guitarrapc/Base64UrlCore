@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\base64urls.batch\base64urls.batch.csproj" />
+    <ProjectReference Include="..\..\globaltool\base64urls.batch\base64urls.batch.csproj" />
   </ItemGroup>
 
 </Project>

@@ -24,7 +24,8 @@ build_script:
 
 test_script:
   - dotnet restore src/Base64UrlCore.sln
-  - dotnet test src/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj
+  - dotnet test tests/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj
+  - dotnet test tests/Base64UrlCoreTool.Tests/Base64UrlCoreTool.Tests.csproj
 
 # deploy_script:
 #   - if [ ${APPVEYOR_REPO_TAG} = "true" ]; then dotnet nuget push ${APPVEYOR_BUILD_FOLDER}/pack/*.nupkg -k ${nuget_api_key} -s https://api.nuget.org/v3/index.json -ss https://nuget.smbsrc.net ; fi

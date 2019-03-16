@@ -2,31 +2,30 @@ FROM microsoft/dotnet:2.2-sdk-bionic AS build
 WORKDIR /app
 
 # restore
-WORKDIR /app/Base64UrlCore/
+WORKDIR /app/src/Base64UrlCore/
 COPY src/Base64UrlCore/Base64UrlCore.csproj ./
 RUN dotnet restore
 
-WORKDIR /app/Base64UrlCore.Tests/
-COPY src/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj ./
+WORKDIR /app/tests/Base64UrlCore.Tests/
+COPY tests/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj ./
 RUN dotnet restore
 
 # COPY
 WORKDIR /app/
-COPY src/. .
+COPY . .
 
 # Build
-WORKDIR /app/Base64UrlCore/
+WORKDIR /app/src/Base64UrlCore/
 RUN dotnet build -c Release
 
 # Test
-WORKDIR /app/Base64UrlCore.Tests/
+WORKDIR /app/tests/Base64UrlCore.Tests/
 RUN dotnet test
 
 # publish
-WORKDIR /app/Base64UrlCore/
+WORKDIR /app/src/Base64UrlCore/
 RUN dotnet publish -c Release
 
 # pack
-WORKDIR /app/Base64UrlCore/
 VOLUME /app/Base64UrlCore/pack
 CMD ["dotnet", "pack", "--include-symbols", "-c", "Release", "-o", "pack"]
