@@ -1,7 +1,6 @@
 ﻿using MicroBatchFramework;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -9,29 +8,8 @@ namespace Base64UrlCore.Tool
 {
     class Program
     {
-        static async Task Main(string[] args)
-        {
-            if (args.Any() && !IsValidCommand(args[0]))
-            {
-                args = new[] { "help" }.ToArray();
-            }
+        static async Task Main(string[] args) => 
             await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
-        }
-
-        /// <summary>
-        /// Ready for fallback to help when f none of arg is match to valid command. E.G., `base64urls unexceptected` should not acceptable.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        private static bool IsValidCommand(string command) => new[]
-        {
-            "help", "list", "-h", "-help", "--help",
-            "version", "-v", "-version", "--version",
-            "encode",
-            "decode",
-            "escape",
-            "unescape",
-        }.Contains(command);
     }
 
     public class Base64Batch : BatchBase
