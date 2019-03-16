@@ -9,7 +9,21 @@ namespace Base64UrlCore.Tool
 {
     class Program
     {
-        private static readonly string[] validCommand = new[]
+        static async Task Main(string[] args)
+        {
+            if (args.Any() && !IsValidCommand(args[0]))
+            {
+                args = new[] { "help" }.ToArray();
+            }
+            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
+        }
+
+        /// <summary>
+        /// Ready for fallback to help when f none of arg is match to valid command. E.G., `base64urls unexceptected` should not acceptable.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        private static bool IsValidCommand(string command) => new[]
         {
             "help", "list", "-h", "-help", "--help",
             "version", "-v", "-version", "--version",
@@ -17,16 +31,7 @@ namespace Base64UrlCore.Tool
             "decode",
             "escape",
             "unescape",
-        };
-        static async Task Main(string[] args)
-        {
-            if (args == null || !args.Any() || !validCommand.Contains(args[0]))
-            {
-                args = new[] { "help" }.ToArray();
-            }
-            // TODO: How to fallback if none of arg is match to command. E.G., `base64urls version`
-            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
-        }
+        }.Contains(command);
     }
 
     public class Base64Batch : BatchBase
@@ -47,7 +52,7 @@ namespace Base64UrlCore.Tool
         /// Provide unix style command argument: -version --version -v + version command
         /// </summary>
         [Command(new[] { "version", "-v", "-version", "--version" }, "show version")]
-        public void ShowVersion()
+        public void Version()
         {
             var version = Assembly.GetEntryAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
@@ -59,8 +64,11 @@ namespace Base64UrlCore.Tool
         /// <summary>
         /// Provide unix style command argument: -help --help -h + override default help / list
         /// </summary>
+        /// <remarks>
+        /// Also override default help. no arguments execution will fallback to here.
+        /// </remarks>
         [Command(new[] { "help", "list", "-h", "-help", "--help" }, "show help")]
-        public void ShowHelp()
+        public void Help()
         {
             Console.WriteLine("Usage: base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
             Console.WriteLine("E.g., run this: base64urls decode QyMgaXMgYXdlc29tZQ==");
