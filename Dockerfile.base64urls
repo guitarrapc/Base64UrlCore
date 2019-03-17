@@ -18,6 +18,11 @@ COPY . .
 WORKDIR /app/globaltool/base64urls/
 RUN dotnet build -c Release
 
+# Test
+WORKDIR /app/tests/Base64UrlCoreTool.Tests/
+RUN dotnet tool install -g dotnet-reportgenerator-globaltool
+RUN dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
+
 # publish
 RUN dotnet publish -c Release
 

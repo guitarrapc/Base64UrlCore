@@ -130,6 +130,14 @@ global tool
 docker build -t base64url . -f Dockerfile.base64urls
 ```
 
+## CI
+
+Retired appveyor, now using CircleCI.
+
+Please set environment variables `CODECOV_TOKEN` to post code coverage.
+
+You can find TOKEN at https://codecov.io/gh/guitarrapc/Base64UrlCore
+
 ## License
 
 MIT
