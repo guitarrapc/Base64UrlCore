@@ -1,6 +1,9 @@
 FROM microsoft/dotnet:2.2-sdk-bionic AS build
 WORKDIR /app
 
+ENV DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+ENV NUGET_XMLDOC_MODE=skip
+
 # restore
 WORKDIR /app/src/Base64UrlCore/
 COPY src/Base64UrlCore/Base64UrlCore.csproj ./
@@ -17,6 +20,11 @@ COPY . .
 # Build
 WORKDIR /app/src/Base64UrlCore/
 RUN dotnet build -c Release
+
+# RUN ls ~/.nuget
+# RUN ls ~/.nuget/NuGet
+# RUN ls ~/.nuget/packages
+# RUN cat ~/.nuget/NuGet/NuGet.Config
 
 # Test
 WORKDIR /app/tests/Base64UrlCore.Tests/

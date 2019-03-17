@@ -6,6 +6,7 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
+      BUILD_CONFIG: Release
 jobs:
   build-test:
     executor: dotnet
@@ -21,18 +22,25 @@ jobs:
     executor: dotnet
     steps:
       - checkout
-      - run: dotnet build -c Release -p:Version=${CIRCLE_TAG}
-      - run: dotnet test -c Release --no-build
-      - run: dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
-      - run: dotnet pack ./globaltool/base64urls/base64urls.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
+      - run:
+          name: deploy when exists tag
+          command: |
+            if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
+              build -c Release -p:Version=${CIRCLE_TAG}
+              dotnet test -c Release --no-build
+              dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
+              dotnet pack ./globaltool/base64urls/base64urls.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./src/Base64UrlCore/bin/Release/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+              dotnet nuget push ./globaltool/base64urls/bin/Release/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+            else
+              echo tag not exists
+            fi
       - store_artifacts:
           path: ./src/Base64UrlCore/bin/Release
           destination: ./Base64UrlCore/
       - store_artifacts:
           path: ./globaltool/base64urls/bin/Release
           destination: ./base64urls/
-      - run: dotnet nuget push ./src/Base64UrlCore/bin/Release/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-      - run: dotnet nuget push ./globaltool/base64urls/bin/Release/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
 workflows:
   version: 2
   build-and-push:
@@ -44,6 +52,6 @@ workflows:
       - build-push:
           filters:
             tags:
-              only: /^\d\.\d\.\d.*/
+              only: /^[0-9](\.[0-9]){2}$/
             branches:
-              ignore: /.*/
+              only: master

@@ -140,6 +140,14 @@ docker build -t base64url . -f Dockerfile.base64urls
 
 Retired appveyor, now using CircleCI.
 
+### Local run
+
+validate ci config.
+
+```
+docker run --rm -v $(pwd):/data circleci/circleci-cli:alpine config validate /data/.circleci/config.yml
+```
+
 ### Code Coverage
 
 Using Coverlet and dotnet-reportgenerator.
