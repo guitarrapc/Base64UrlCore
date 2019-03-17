@@ -1,4 +1,6 @@
-## Base64UrlCore
+[![CircleCI](https://circleci.com/gh/guitarrapc/Base64UrlCore.svg?style=svg)](https://circleci.com/gh/guitarrapc/Base64UrlCore) [![codecov](https://codecov.io/gh/guitarrapc/Base64UrlCore/branch/master/graph/badge.svg)](https://codecov.io/gh/guitarrapc/Base64UrlCore) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) 
+
+## Base64UrlCore 
 
 Converting to, and from, [base64url](https://en.wikipedia.org/wiki/Base64#RFC_4648)
 
@@ -8,11 +10,15 @@ Converting to, and from, [base64url](https://en.wikipedia.org/wiki/Base64#RFC_46
 
 ### CLI
 
+[![NuGet](https://img.shields.io/nuget/v/base64urls.svg)](https://www.nuget.org/packages/base64urls)
+
 ```bash
 dotnet tool install -g base64urls
 ```
 
 ### Library
+
+[![NuGet](https://img.shields.io/nuget/v/Base64UrlCore.svg)](https://www.nuget.org/packages/Base64UrlCore)
 
 ```bash
 dotnet add package Base64UrlCore
@@ -134,9 +140,14 @@ docker build -t base64url . -f Dockerfile.base64urls
 
 Retired appveyor, now using CircleCI.
 
-Please set environment variables `CODECOV_TOKEN` to post code coverage.
+### Code Coverage
 
-You can find TOKEN at https://codecov.io/gh/guitarrapc/Base64UrlCore
+Using Coverlet and dotnet-reportgenerator.
+Add `coverlet.msbuild` to your csproj, add dotnet global tool `dotnet tool install -g dotnet-reportgenerator-globaltool`, and add environment variables `CODECOV_TOKEN` to CI. (You can find TOKEN at https://codecov.io/gh/guitarrapc/Base64UrlCore)
+
+### NuGet push
+
+Add environment variable `NUGET_KEY` to CI. You can generate it at https://www.nuget.org/account/apikeys.
 
 ## License
 
