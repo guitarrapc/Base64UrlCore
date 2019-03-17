@@ -38,14 +38,14 @@ jobs:
       - restore_cache:
           key: nuget-{{ .Branch }}
       - run:
-        name: deploy when exists tag
-        command: |
-          if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-            dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
-            dotnet nuget push ./src/Base64UrlCore/bin/${BUILD_CONFIG}/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-          else
-            echo tag not exists
-          fi
+          name: deploy when exists tag
+          command: |
+            if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
+              dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./src/Base64UrlCore/bin/${BUILD_CONFIG}/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+            else
+              echo tag not exists
+            fi
       - store_artifacts:
           path: ./src/Base64UrlCore/bin/${BUILD_CONFIG}
           destination: ./Base64UrlCore/
@@ -56,14 +56,14 @@ jobs:
       - restore_cache:
           key: nuget-{{ .Branch }}
       - run:
-        name: deploy when exists tag
-        command: |
-          if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-            dotnet pack ./globaltool/base64urls/base64urls.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
-            dotnet nuget push ./globaltool/base64urls/bin/${BUILD_CONFIG}/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-          else
-            echo tag not exists
-          fi
+          name: deploy when exists tag
+          command: |
+            if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
+              dotnet pack ./globaltool/base64urls/base64urls.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./globaltool/base64urls/bin/${BUILD_CONFIG}/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+            else
+              echo tag not exists
+            fi
       - store_artifacts:
           path: ./globaltool/base64urls/bin/${BUILD_CONFIG}
           destination: ./base64urls/
