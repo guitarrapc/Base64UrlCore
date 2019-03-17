@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "base64urls.batch": {
+    "base64urls": {
       "commandName": "Project",
       "commandLineArgs": "encode \"C# is awesome.\""
     }
