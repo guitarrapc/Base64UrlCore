@@ -12,10 +12,7 @@ namespace Base64UrlCore
         /// </summary>
         /// <param name="utf8string"></param>
         /// <returns></returns>
-        public static string Encode(string utf8string)
-        {
-            return Encode(utf8string, defaultEncoding);
-        }
+        public static string Encode(string utf8string) => Encode(utf8string, defaultEncoding);
 
         /// <summary>
         /// Encode from plain utf8string to Base64 url string
@@ -23,31 +20,22 @@ namespace Base64UrlCore
         /// <param name="utf8string"></param>
         /// <param name="enc"></param>
         /// <returns></returns>
-        public static string Encode(string utf8string, Encoding enc)
-        {
-            var bytes = enc.GetBytes(Escape(utf8string));
-            return Encode(bytes);
-        }
+        public static string Encode(string utf8string, Encoding enc) 
+            => Encode(enc.GetBytes(Escape(utf8string)));
 
         /// <summary>
         /// Encode from bytes to Base64 url string
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static string Encode(byte[] bytes)
-        {
-            return Convert.ToBase64String(bytes);
-        }
+        public static string Encode(byte[] bytes) => Convert.ToBase64String(bytes);
 
         /// <summary>
         /// Decode from Base64 url string to plain string
         /// </summary>
         /// <param name="base64string"></param>
         /// <returns></returns>
-        public static string Decode(string base64string)
-        {
-            return Decode(base64string, defaultEncoding);
-        }
+        public static string Decode(string base64string) => Decode(base64string, defaultEncoding);
 
         /// <summary>
         /// Decode from Base64 url string to plain string
@@ -55,11 +43,8 @@ namespace Base64UrlCore
         /// <param name="base64string"></param>
         /// <param name="enc"></param>
         /// <returns></returns>
-        public static string Decode(string base64string, Encoding enc)
-        {
-            var base64 = Convert.FromBase64String(Unescape(base64string));
-            return Decode(base64);
-        }
+        public static string Decode(string base64string, Encoding enc) 
+            => Decode(Convert.FromBase64String(Unescape(base64string)), enc);
 
         /// <summary>
         /// Decode from Base64 url bytes to plain string
@@ -67,10 +52,7 @@ namespace Base64UrlCore
         /// <param name="bytes"></param>
         /// <param name="enc"></param>
         /// <returns></returns>
-        public static string Decode(byte[] bytes)
-        {
-            return defaultEncoding.GetString(bytes);
-        }
+        public static string Decode(byte[] bytes) => defaultEncoding.GetString(bytes);
 
         /// <summary>
         /// Decode from Base64 url bytes to plain string
@@ -78,34 +60,27 @@ namespace Base64UrlCore
         /// <param name="bytes"></param>
         /// <param name="enc"></param>
         /// <returns></returns>
-        public static string Decode(byte[] bytes, Encoding enc)
-        {
-            return enc.GetString(bytes);
-        }
+        public static string Decode(byte[] bytes, Encoding enc) => enc.GetString(bytes);
 
         /// <summary>
         /// Fix Plain format to Base64 format
         /// </summary>
         /// <param name="base64Url"></param>
         /// <returns></returns>
-        public static string Unescape(string base64Url)
-        {
-            return PadString(base64Url)
+        public static string Unescape(string base64Url) 
+            => PadString(base64Url)
                 .Replace("-", "+")
                 .Replace("_", "/");
-        }
 
         /// <summary>
         /// Fix Base64 format to Plain format
         /// </summary>
         /// <param name="base64"></param>
         /// <returns></returns>
-        public static string Escape(string base64)
-        {
-            return RemovePadding(base64)
+        public static string Escape(string base64) 
+            => RemovePadding(base64)
                 .Replace("+", "-")
                 .Replace("/", "_");
-        }
 
         /// <summary>
         /// Padding = to base64 string when it missing.
@@ -136,9 +111,6 @@ namespace Base64UrlCore
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string RemovePadding(string text)
-        {
-            return text.Replace("=", "");
-        }
+        public static string RemovePadding(string text) => text.Replace("=", "");
     }
 }
