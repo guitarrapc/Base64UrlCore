@@ -59,13 +59,13 @@ jobs:
           name: deploy when exists tag
           command: |
             if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-              dotnet pack ./globaltool/base64urls/base64urls.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
-              dotnet nuget push ./globaltool/base64urls/bin/${BUILD_CONFIG}/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+              dotnet pack ./src/base64urls/base64urls.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./src/base64urls/bin/${BUILD_CONFIG}/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
             else
               echo tag not exists
             fi
       - store_artifacts:
-          path: ./globaltool/base64urls/bin/${BUILD_CONFIG}
+          path: ./src/base64urls/bin/${BUILD_CONFIG}
           destination: ./base64urls/
 workflows:
   version: 2

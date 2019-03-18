@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\globaltool\base64urls\base64urls.csproj" />
+    <ProjectReference Include="..\..\src\base64urls\base64urls.csproj" />
   </ItemGroup>
 
 </Project>

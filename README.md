@@ -133,7 +133,7 @@ docker build -t base64urlcore . -f Dockerfile.Base64UrlCore
 global tool
 
 ```
-docker build -t base64url . -f Dockerfile.base64urls
+docker build -t base64urls . -f Dockerfile.base64urls
 ```
 
 ## CI

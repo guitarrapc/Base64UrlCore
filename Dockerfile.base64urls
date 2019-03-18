@@ -9,8 +9,8 @@ WORKDIR /app/src/Base64UrlCore/
 COPY src/Base64UrlCore/Base64UrlCore.csproj ./
 RUN dotnet restore
 
-WORKDIR /app/globaltool/base64urls/
-COPY globaltool/base64urls/base64urls.csproj ./
+WORKDIR /app/src/base64urls/
+COPY src/base64urls/base64urls.csproj ./
 RUN dotnet restore
 
 # COPY
@@ -18,7 +18,7 @@ WORKDIR /app/
 COPY . .
 
 # Build
-WORKDIR /app/globaltool/base64urls/
+WORKDIR /app/src/base64urls/
 RUN dotnet build -c Release
 
 # RUN ls ~/.nuget
