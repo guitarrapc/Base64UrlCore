@@ -6,6 +6,8 @@ Converting to, and from, [base64url](https://en.wikipedia.org/wiki/Base64#RFC_46
 
 [base64urls](https://www.nuget.org/packages/base64urls) offer you to run [Base64UrlCore](https://www.nuget.org/packages/Base64UrlCore) on the CLI.
 
+This project is using `nullable reference type`.
+
 ## Install
 
 ### CLI
