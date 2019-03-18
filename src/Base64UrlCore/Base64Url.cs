@@ -118,8 +118,7 @@ namespace Base64UrlCore
             // base64String.PadRight(base64String.Length + (4 - base64String.Length % 4) % 4, '=');
 
             var segment = 4;
-            var length = text.Length;
-            var diff = length % segment;
+            var diff = text.Length % segment;
 
             if (diff == 0) return text;
 
