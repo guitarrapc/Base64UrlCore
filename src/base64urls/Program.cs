@@ -16,10 +16,8 @@ namespace Base64UrlCore.Tool
     public class Base64Batch : BatchBase
     {
         private readonly ILogger<BatchEngine> logger;
-        public Base64Batch(ILogger<BatchEngine> logger)
-        {
-            this.logger = logger;
-        }
+        public Base64Batch(ILogger<BatchEngine> logger) => this.logger = logger;
+
         [Command("encode", "encode input string to base64url")]
         public void Encode([Option(0)]string input) => logger.LogInformation(Base64Url.Encode(input));
 
