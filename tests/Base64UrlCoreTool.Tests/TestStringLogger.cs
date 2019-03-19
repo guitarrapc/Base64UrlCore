@@ -1,8 +1,9 @@
-﻿using MicroBatchFramework;
+using MicroBatchFramework;
 using Microsoft.Extensions.Logging;
 using System;
 
 namespace Base64UrlCoreTool.Tests
+
 {
     public class TestStringLogger : ILogger<BatchEngine>
     {

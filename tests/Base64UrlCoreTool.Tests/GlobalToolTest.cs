@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Base64UrlCoreTool.Tests
+
 {
     public class GlobalToolTest
     {
