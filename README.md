@@ -1,5 +1,6 @@
-[![Base64UrlCore NuGet](https://img.shields.io/nuget/v/Base64UrlCore.svg)](https://www.nuget.org/packages/Base64UrlCore) [![base64urls NuGet](https://img.shields.io/nuget/v/base64urls.svg)](https://www.nuget.org/packages/base64urls)
 [![CircleCI](https://circleci.com/gh/guitarrapc/Base64UrlCore.svg?style=svg)](https://circleci.com/gh/guitarrapc/Base64UrlCore) [![codecov](https://codecov.io/gh/guitarrapc/Base64UrlCore/branch/master/graph/badge.svg)](https://codecov.io/gh/guitarrapc/Base64UrlCore) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) 
+
+[![NuGet](https://img.shields.io/nuget/v/Base64UrlCore.svg?label=Base64UrlCore%20nuget)](https://www.nuget.org/packages/Base64UrlCore) [![NuGet](https://img.shields.io/nuget/v/base64urls.svg?label=base64urls%20nuget)](https://www.nuget.org/packages/base64urls)
 
 ## Base64UrlCore 
 
