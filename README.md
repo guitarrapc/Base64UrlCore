@@ -1,3 +1,4 @@
+[![Base64UrlCore NuGet](https://img.shields.io/nuget/v/Base64UrlCore.svg)](https://www.nuget.org/packages/Base64UrlCore) [![base64urls NuGet](https://img.shields.io/nuget/v/base64urls.svg)](https://www.nuget.org/packages/base64urls)
 [![CircleCI](https://circleci.com/gh/guitarrapc/Base64UrlCore.svg?style=svg)](https://circleci.com/gh/guitarrapc/Base64UrlCore) [![codecov](https://codecov.io/gh/guitarrapc/Base64UrlCore/branch/master/graph/badge.svg)](https://codecov.io/gh/guitarrapc/Base64UrlCore) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) 
 
 ## Base64UrlCore 
@@ -10,15 +11,11 @@ Converting to, and from, [base64url](https://en.wikipedia.org/wiki/Base64#RFC_46
 
 ### CLI
 
-[![NuGet](https://img.shields.io/nuget/v/base64urls.svg)](https://www.nuget.org/packages/base64urls)
-
 ```bash
 dotnet tool install -g base64urls
 ```
 
 ### Library
-
-[![NuGet](https://img.shields.io/nuget/v/Base64UrlCore.svg)](https://www.nuget.org/packages/Base64UrlCore)
 
 ```bash
 dotnet add package Base64UrlCore
