@@ -40,40 +40,27 @@ jobs:
       - run: curl -s https://codecov.io/bash > codecov
       - run: chmod +x codecov
       - run: ./codecov -f ./tests/Base64UrlCore.Tests/coverage.opencover.xml
-  deploy_library:
+  deploy:
+    parameters:
+      project:
+        type: enum
+        enum: ["Base64UrlCore", "base64urls"]
     executor: default
     steps:
       - checkout
       - restore_nuget
       - run:
-          name: deploy when exists tag
+          name: nuget pack/push << parameters.env >>
           command: |
             if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-              dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
-              dotnet nuget push ./src/Base64UrlCore/bin/${BUILD_CONFIG}/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+              dotnet pack ./src/<< parameters.env >>/<< parameters.env >>.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./src/<< parameters.env >>/bin/${BUILD_CONFIG}/<< parameters.env >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
             else
               echo tag not exists
             fi
       - store_artifacts:
-          path: ./src/Base64UrlCore/bin/${BUILD_CONFIG}
-          destination: ./Base64UrlCore/
-  deploy_cli:
-    executor: default
-    steps:
-      - checkout
-      - restore_nuget
-      - run:
-          name: deploy when exists tag
-          command: |
-            if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-              dotnet pack ./src/base64urls/base64urls.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
-              dotnet nuget push ./src/base64urls/bin/${BUILD_CONFIG}/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-            else
-              echo tag not exists
-            fi
-      - store_artifacts:
-          path: ./src/base64urls/bin/${BUILD_CONFIG}
-          destination: ./base64urls/
+          path: ./src/<< parameters.env >>/bin/${BUILD_CONFIG}
+          destination: ./<< parameters.env >>/
 workflows:
   version: 2
   build_test_deploy:
@@ -83,24 +70,28 @@ workflows:
             tags:
               only: /.*/
       - test:
+          requires:
+            - build
           filters:
             tags:
               only: /.*/
-      - deploy_library:
+      - deploy:
+          project: Base64UrlCore
           requires:
             - build
             - test
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
               only: /^[0-9](\.[0-9]){2}$/
-      - deploy_cli:
+      - deploy:
+          project: base64urls
           requires:
             - build
             - test
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
               only: /^[0-9](\.[0-9]){2}$/
