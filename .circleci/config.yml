@@ -30,11 +30,16 @@ jobs:
       - run: dotnet restore
       - run: dotnet build -c ${BUILD_CONFIG}
       - save_nuget
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - src
+            - tests
   test:
     executor: default
     steps:
-      - checkout
-      - restore_nuget
+      - attach_workspace:
+          at: /root/project
       - run: dotnet tool install -g dotnet-reportgenerator-globaltool
       - run: dotnet test -c ${BUILD_CONFIG} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
       - run: curl -s https://codecov.io/bash > codecov
@@ -43,7 +48,8 @@ jobs:
   deploy_library:
     executor: default
     steps:
-      - checkout
+      - attach_workspace:
+          at: /root/project
       - restore_nuget
       - run:
           name: deploy when exists tag
@@ -60,7 +66,8 @@ jobs:
   deploy_cli:
     executor: default
     steps:
-      - checkout
+      - attach_workspace:
+          at: /root/project
       - restore_nuget
       - run:
           name: deploy when exists tag
