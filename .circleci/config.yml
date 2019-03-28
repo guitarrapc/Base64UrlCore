@@ -1,7 +1,7 @@
 version: 2.1
 executors:
   default:
-    working_directory: ~/workspace
+    working_directory: /app
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
     environment:
