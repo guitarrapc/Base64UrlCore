@@ -6,7 +6,6 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
-      BUILD_CONFIG: Release
 commands:
   restore_nuget:
     steps:
@@ -28,7 +27,7 @@ jobs:
       - checkout
       - restore_nuget
       - run: dotnet restore
-      - run: dotnet build -c ${BUILD_CONFIG}
+      - run: dotnet build -c Debug
       - save_nuget
   test:
     executor: default
@@ -36,7 +35,7 @@ jobs:
       - checkout
       - restore_nuget
       - run: dotnet tool install -g dotnet-reportgenerator-globaltool
-      - run: dotnet test -c ${BUILD_CONFIG} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
+      - run: dotnet test -c Debug --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
       - run: curl -s https://codecov.io/bash > codecov
       - run: chmod +x codecov
       - run: ./codecov -f ./tests/Base64UrlCore.Tests/coverage.opencover.xml
@@ -49,7 +48,9 @@ jobs:
     steps:
       - checkout
       - restore_nuget
-      - run: dotnet pack ./src/<< parameters.project >>/<< parameters.project >>.csproj -c ${BUILD_CONFIG} -p:Version=${CIRCLE_TAG}
+      - run: dotnet build -c Release -p:Version=${CIRCLE_TAG}
+      - run: dotnet test -c Release
+      - run: dotnet pack ./src/<< parameters.project >>/<< parameters.project >>.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
       - run: dotnet nuget push ./src/<< parameters.project >>/bin/${BUILD_CONFIG}/<< parameters.project >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
       - store_artifacts:
           path: ./src/<< parameters.project >>/bin/${BUILD_CONFIG}
