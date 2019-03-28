@@ -6,18 +6,34 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
+      CACHE_VERSION_NUGET: v1
 commands:
   restore_nuget:
     steps:
+      - run:
+          name: Calculate cache key for csproj
+          command: |
+            {
+              md5sum $(find . -name '*.csproj' | sort -r)
+            } > ~/cache-key-source
       - restore_cache:
           name: Restore nuget pacakges
-          key: nuget-{{ checksum "src/Base64UrlCore/Base64UrlCore.csproj" }}-{{ checksum "src/base64urls/base64urls.csproj" }}-{{ checksum "tests/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj" }}-{{ checksum "tests/Base64UrlCoreTool.Tests/Base64UrlCoreTool.Tests.csproj" }}-{{ .Environment.CACHE_VERSION_NUGET }}
+          keys:
+            - nuget-{{ .Environment.CACHE_VERSION_NUGET }}-{{ checksum "~/cache-key-source" }}
+            - nuget-{{ .Environment.CACHE_VERSION_NUGET }}-
+            - nuget-
 
   save_nuget:
     steps:
+      - run:
+          name: Calculate cache key for csproj
+          command: |
+            {
+              md5sum $(find . -name '*.csproj' | sort -r)
+            } > ~/cache-key-source
       - save_cache:
           name: Cache nuget pacakges
-          key: nuget-{{ checksum "src/Base64UrlCore/Base64UrlCore.csproj" }}-{{ checksum "src/base64urls/base64urls.csproj" }}-{{ checksum "tests/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj" }}-{{ checksum "tests/Base64UrlCoreTool.Tests/Base64UrlCoreTool.Tests.csproj" }}-{{ .Environment.CACHE_VERSION_NUGET }}
+          key: nuget-{{ .Environment.CACHE_VERSION_NUGET }}-{{ checksum "~/cache-key-source" }}
           paths:
             - "~/.nuget"
 jobs:
