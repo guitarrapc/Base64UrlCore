@@ -51,9 +51,9 @@ jobs:
       - run: dotnet build -c Release -p:Version=${CIRCLE_TAG}
       - run: dotnet test -c Release
       - run: dotnet pack ./src/<< parameters.project >>/<< parameters.project >>.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
-      - run: dotnet nuget push ./src/<< parameters.project >>/bin/${BUILD_CONFIG}/<< parameters.project >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+      - run: dotnet nuget push ./src/<< parameters.project >>/bin/Release/<< parameters.project >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
       - store_artifacts:
-          path: ./src/<< parameters.project >>/bin/${BUILD_CONFIG}
+          path: ./src/<< parameters.project >>/bin/Release
           destination: ./<< parameters.project >>/
 workflows:
   version: 2
