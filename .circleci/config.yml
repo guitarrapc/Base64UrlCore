@@ -1,57 +1,107 @@
 version: 2.1
 executors:
-  dotnet:
+  default:
+    working_directory: ~/workspace
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
       BUILD_CONFIG: Release
+commands:
+  restore_nuget:
+    steps:
+      - restore_cache:
+          name: Restore nuget pacakges
+          key: nuget-{{ checksum "src/Base64UrlCore/Base64UrlCore.csproj" }}-{{ checksum "src/base64urls/base64urls.csproj" }}-{{ checksum "tests/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj" }}-{{ checksum "tests/Base64UrlCoreTool.Tests/Base64UrlCoreTool.Tests.csproj" }}-{{ .Environment.CACHE_VERSION_NUGET }}
+
+  save_nuget:
+    steps:
+      - save_cache:
+          name: Cache nuget pacakges
+          key: nuget-{{ checksum "src/Base64UrlCore/Base64UrlCore.csproj" }}-{{ checksum "src/base64urls/base64urls.csproj" }}-{{ checksum "tests/Base64UrlCore.Tests/Base64UrlCore.Tests.csproj" }}-{{ checksum "tests/Base64UrlCoreTool.Tests/Base64UrlCoreTool.Tests.csproj" }}-{{ .Environment.CACHE_VERSION_NUGET }}
+          paths:
+            - "~/.nuget"
 jobs:
-  build-test:
-    executor: dotnet
+  build:
+    executor: default
     steps:
       - checkout
+      - restore_nuget
+      - run: dotnet restore
+      - run: dotnet build -c ${BUILD_CONFIG}
+      - save_nuget
+  test:
+    executor: default
+    steps:
+      - checkout
+      - restore_nuget
       - run: dotnet tool install -g dotnet-reportgenerator-globaltool
-      - run: dotnet build -c Debug
-      - run: dotnet test -c Debug --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
+      - run: dotnet test -c ${BUILD_CONFIG} --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
       - run: curl -s https://codecov.io/bash > codecov
       - run: chmod +x codecov
       - run: ./codecov -f ./tests/Base64UrlCore.Tests/coverage.opencover.xml
-  build-push:
-    executor: dotnet
+  deploy_library:
+    executor: default
     steps:
       - checkout
+      - restore_nuget
       - run:
           name: deploy when exists tag
           command: |
             if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-              dotnet build -c Release -p:Version=${CIRCLE_TAG}
-              dotnet test -c Release --no-build
-              dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
-              dotnet pack ./src/base64urls/base64urls.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
-              dotnet nuget push ./src/Base64UrlCore/bin/Release/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-              dotnet nuget push ./src/base64urls/bin/Release/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+              dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./src/Base64UrlCore/bin/${BUILD_CONFIG}/Base64UrlCore.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
             else
               echo tag not exists
             fi
       - store_artifacts:
-          path: ./src/Base64UrlCore/bin/Release
+          path: ./src/Base64UrlCore/bin/${BUILD_CONFIG}
           destination: ./Base64UrlCore/
+  deploy_cli:
+    executor: default
+    steps:
+      - checkout
+      - restore_nuget
+      - run:
+          name: deploy when exists tag
+          command: |
+            if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
+              dotnet pack ./src/base64urls/base64urls.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+              dotnet nuget push ./src/base64urls/bin/${BUILD_CONFIG}/base64urls.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+            else
+              echo tag not exists
+            fi
       - store_artifacts:
-          path: ./src/base64urls/bin/Release
+          path: ./src/base64urls/bin/${BUILD_CONFIG}
           destination: ./base64urls/
 workflows:
   version: 2
-  build-and-push:
+  build_test_deploy:
     jobs:
-      - build-test:
+      - build:
           filters:
             tags:
               only: /.*/
-      - build-push:
+      - test:
+          requires:
+            - build
           filters:
             tags:
-              only: /^[0-9](\.[0-9]){2}$/
+              only: /.*/
+      - deploy_library:
+          requires:
+            - test
+          filters:
             branches:
-              only: master
+              nly: master
+            tags:
+              only: /^[0-9](\.[0-9]){2}$/
+      - deploy_cli:
+          requires:
+            - test
+          filters:
+            branches:
+              nly: master
+            tags:
+              only: /^[0-9](\.[0-9]){2}$/
