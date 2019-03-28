@@ -6,7 +6,6 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
-      CACHE_VERSION_NUGET: v1
 commands:
   restore_nuget:
     steps:
@@ -19,8 +18,8 @@ commands:
       - restore_cache:
           name: Restore nuget pacakges
           keys:
-            - nuget-{{ .Environment.CACHE_VERSION_NUGET }}-{{ checksum "~/cache-key-source" }}
-            - nuget-{{ .Environment.CACHE_VERSION_NUGET }}-
+            - nuget-v1-{{ checksum "~/cache-key-source" }}
+            - nuget-v1-
             - nuget-
 
   save_nuget:
@@ -33,7 +32,7 @@ commands:
             } > ~/cache-key-source
       - save_cache:
           name: Cache nuget pacakges
-          key: nuget-{{ .Environment.CACHE_VERSION_NUGET }}-{{ checksum "~/cache-key-source" }}
+          key: nuget-v1-{{ checksum "~/cache-key-source" }}
           paths:
             - "~/.nuget"
 jobs:
