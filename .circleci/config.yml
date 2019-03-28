@@ -49,15 +49,8 @@ jobs:
     steps:
       - checkout
       - restore_nuget
-      - run:
-          name: nuget pack/push << parameters.project >>
-          command: |
-            if [ "${CIRCLE_TAG-undefined}" != "undefined" ]; then
-              dotnet pack ./src/<< parameters.project >>/<< parameters.project >>.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
-              dotnet nuget push ./src/<< parameters.project >>/bin/${BUILD_CONFIG}/<< parameters.project >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-            else
-              echo tag not exists
-            fi
+      - run: dotnet pack ./src/<< parameters.project >>/<< parameters.project >>.csproj -c ${BUILD_CONFIG} --no-build -p:Version=${CIRCLE_TAG}
+      - run: dotnet nuget push ./src/<< parameters.project >>/bin/${BUILD_CONFIG}/<< parameters.project >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
       - store_artifacts:
           path: ./src/<< parameters.project >>/bin/${BUILD_CONFIG}
           destination: ./<< parameters.project >>/
