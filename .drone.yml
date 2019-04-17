@@ -24,7 +24,6 @@ steps:
     event:
     - push
 
-steps:
 - name: deploy
   image: mcr.microsoft.com/dotnet/core/sdk:2.2
   environment:
