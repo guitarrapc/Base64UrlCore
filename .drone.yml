@@ -1,5 +1,5 @@
 kind: pipeline
-name: build
+name: default
 
 steps:
 - name: build
@@ -24,10 +24,6 @@ steps:
     event:
     - push
 
----
-kind: pipeline
-nane: deploy
-
 steps:
 - name: deploy
   image: mcr.microsoft.com/dotnet/core/sdk:2.2
@@ -44,6 +40,3 @@ steps:
   when:
     event:
     - tag
-
-depends_on:
-- build
