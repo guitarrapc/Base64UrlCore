@@ -9,7 +9,7 @@ namespace Base64UrlCore.Tool
 {
     class Program
     {
-        static async Task Main(string[] args) => 
+        static async Task Main(string[] args) =>
             await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
     }
 
