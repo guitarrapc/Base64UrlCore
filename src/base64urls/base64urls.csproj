@@ -5,13 +5,17 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- see https://github.com/dotnet/docs/issues/12237 -->
+    <RollForward>LatestMajor</RollForward>
 
     <RootNamespace>Base64UrlCore.Tool</RootNamespace>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <PackAsTool>true</PackAsTool>
     <PackageId>base64urls</PackageId>
     <!-- Version is override on CircleCI -->
-    <Version>1.0.0.0</Version>
-
     <Authors>guitarrapc</Authors>
     <Company />
     <Summary>base64 encode/decode for URL applications. dotnet global tool of Base64UrlCore.</Summary>
