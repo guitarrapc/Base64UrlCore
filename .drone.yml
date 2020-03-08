@@ -3,39 +3,31 @@ name: default
 
 steps:
 - name: build
-  image: mcr.microsoft.com/dotnet/core/sdk:2.2
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
   commands:
   - dotnet restore
   - dotnet build -c Debug
-  when:
-    event:
-    - push
-
-- name: test
-  image: mcr.microsoft.com/dotnet/core/sdk:2.2
-  commands:
-  - dotnet restore
   - dotnet tool install -g dotnet-reportgenerator-globaltool
   - dotnet test -c Debug --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
   - curl -s https://codecov.io/bash > codecov
   - chmod +x codecov
-  - ./codecov -f ./tests/Base64UrlCore.Tests/coverage.opencover.xml
+#   - ./codecov -f ./tests/Base64UrlCore.Tests/coverage.opencover.xml
   when:
     event:
     - push
 
-- name: deploy
-  image: mcr.microsoft.com/dotnet/core/sdk:2.2
-  environment:
-    NUGET_KEY:
-      from_secret: NUGET_KEY
-  commands:
-  - dotnet restore
-  - dotnet build -c Release
-  - dotnet pack ./src/base64urls/base64urls.csproj -c Release --no-build -p:Version=${DRONE_TAG}
-  - dotnet nuget push ./src/base64urls/bin/Release/base64urls.${DRONE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-  - dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c Release --no-build -p:Version=${DRONE_TAG}
-  - dotnet nuget push ./src/Base64UrlCore/bin/Release/Base64UrlCore.${DRONE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
-  when:
-    event:
-    - tag
+# - name: deploy
+#   image: mcr.microsoft.com/dotnet/core/sdk:3.1
+#   environment:
+#     NUGET_KEY:
+#       from_secret: NUGET_KEY
+#   commands:
+#   - dotnet restore
+#   - dotnet build -c Release
+#   - dotnet pack ./src/base64urls/base64urls.csproj -c Release --no-build -p:Version=${DRONE_TAG}
+#   - dotnet nuget push ./src/base64urls/bin/Release/base64urls.${DRONE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+#   - dotnet pack ./src/Base64UrlCore/Base64UrlCore.csproj -c Release --no-build -p:Version=${DRONE_TAG}
+#   - dotnet nuget push ./src/Base64UrlCore/bin/Release/Base64UrlCore.${DRONE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
+#   when:
+#     event:
+#     - tag
