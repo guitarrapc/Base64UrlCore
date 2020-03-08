@@ -6,49 +6,14 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
-commands:
-  restore_nuget:
-    steps:
-      - run:
-          name: Calculate cache key for csproj
-          command: |
-            {
-              md5sum $(find . -name '*.csproj' | sort -r)
-            } > ~/cache-key-source
-      - restore_cache:
-          name: Restore nuget pacakges
-          keys:
-            - nuget-v1-{{ checksum "~/cache-key-source" }}
-            - nuget-v1-
-            - nuget-
 
-  save_nuget:
-    steps:
-      - run:
-          name: Calculate cache key for csproj
-          command: |
-            {
-              md5sum $(find . -name '*.csproj' | sort -r)
-            } > ~/cache-key-source
-      - save_cache:
-          name: Cache nuget pacakges
-          key: nuget-v1-{{ checksum "~/cache-key-source" }}
-          paths:
-            - "~/.nuget"
 jobs:
   build:
     executor: default
     steps:
       - checkout
-      - restore_nuget
       - run: dotnet restore
       - run: dotnet build -c Debug
-      - save_nuget
-  test:
-    executor: default
-    steps:
-      - checkout
-      - restore_nuget
       - run: dotnet tool install -g dotnet-reportgenerator-globaltool
       - run: dotnet test -c Debug --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Include=[Base64UrlCore.*]*
       - run: curl -s https://codecov.io/bash > codecov
@@ -62,9 +27,8 @@ jobs:
     executor: default
     steps:
       - checkout
-      - restore_nuget
       - run: dotnet build -c Release -p:Version=${CIRCLE_TAG}
-      - run: dotnet test -c Release
+      - run: dotnet test -c Release -p:Version=${CIRCLE_TAG}
       - run: dotnet pack ./src/<< parameters.project >>/<< parameters.project >>.csproj -c Release --no-build -p:Version=${CIRCLE_TAG}
       - run: dotnet nuget push ./src/<< parameters.project >>/bin/Release/<< parameters.project >>.${CIRCLE_TAG}.nupkg -s https://www.nuget.org/api/v2/package -k ${NUGET_KEY}
       - store_artifacts:
@@ -77,18 +41,11 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - test:
-          requires:
-            - build
-          filters:
-            tags:
-              only: /.*/
       - deploy:
           name: "deploy - nuget library"
           project: Base64UrlCore
           requires:
             - build
-            - test
           filters:
             branches:
               ignore: /.*/
@@ -99,7 +56,6 @@ workflows:
           project: base64urls
           requires:
             - build
-            - test
           filters:
             branches:
               ignore: /.*/
