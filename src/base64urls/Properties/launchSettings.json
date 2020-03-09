@@ -2,7 +2,7 @@
   "profiles": {
     "base64urls": {
       "commandName": "Project",
-      "commandLineArgs": "encode \"C# is awesome.\""
+      "commandLineArgs": "decode QyMgaXMgYXdlc29tZQ=="
     }
   }
 }
