@@ -1,15 +1,12 @@
 using Base64UrlCore.Tool;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Base64UrlCoreTool.Tests
-
 {
     public class GlobalToolTest
     {
-        private TestStringLogger logger = new TestStringLogger(LogLevel.Information);
-
         [Theory]
         [InlineData("MQ==", "1")]
         [InlineData("MTE=", "11")]
@@ -21,11 +18,12 @@ namespace Base64UrlCoreTool.Tests
         [InlineData("cGl5b3BpeW8=", "piyopiyo")]
         [InlineData("QyMgaXMgYXdlc29tZS4=", "C# is awesome.")]
         [InlineData("Tm9kZS5qcyBpcyBhd2Vzb21lLg==", "Node.js is awesome.")]
-        public void DecodeTest(string input, string expected)
+        public async Task DecodeTest(string input, string expected)
         {
-            var base64 = new Base64Batch(logger);
-            base64.Decode(input);
-            logger.Result.Should().Be(expected);
+            var base64 = new Base64Batch();
+            await base64.Decode(input);
+            var read = await base64.Reader.ReadAsync();
+            read.Should().Be(expected);
         }
 
         [Theory]
@@ -39,11 +37,12 @@ namespace Base64UrlCoreTool.Tests
         [InlineData("piyopiyo", "cGl5b3BpeW8=")]
         [InlineData("C# is awesome.", "QyMgaXMgYXdlc29tZS4=")]
         [InlineData("Node.js is awesome.", "Tm9kZS5qcyBpcyBhd2Vzb21lLg==")]
-        public void EncodeTest(string input, string expected)
+        public async Task EncodeTest(string input, string expected)
         {
-            var base64 = new Base64Batch(logger);
-            base64.Encode(input);
-            logger.Result.Should().Be(expected);
+            var base64 = new Base64Batch();
+            await base64.Encode(input);
+            var read = await base64.Reader.ReadAsync();
+            read.Should().Be(expected);
         }
 
         [Theory]
@@ -55,29 +54,32 @@ namespace Base64UrlCoreTool.Tests
         [InlineData("QyMgaXMgYXdlc29tZS4", "C# is awesome.")]
         [InlineData("Tm9kZS5qcyBpcyBhd2Vzb21lLg", "Node.js is awesome.")]
         [InlineData("Tm9kZS5qcyBpcyBhd2Vzb21lLg=", "Node.js is awesome.")]
-        public void DecodePaddingMissAutoFixTest(string input, string expected)
+        public async Task DecodePaddingMissAutoFixTest(string input, string expected)
         {
-            var base64 = new Base64Batch(logger);
-            base64.Decode(input);
-            logger.Result.Should().Be(expected);
+            var base64 = new Base64Batch();
+            await base64.Decode(input);
+            var read = await base64.Reader.ReadAsync();
+            read.Should().Be(expected);
         }
 
         [Theory]
         [InlineData("This+is/goingto+escape==", "This-is_goingto-escape")]
-        public void EscapeTest(string input, string expected)
+        public async Task EscapeTest(string input, string expected)
         {
-            var base64 = new Base64Batch(logger);
-            base64.Escape(input);
-            logger.Result.Should().Be(expected);
+            var base64 = new Base64Batch();
+            await base64.Escape(input);
+            var read = await base64.Reader.ReadAsync();
+            read.Should().Be(expected);
         }
 
         [Theory]
         [InlineData("This-is_goingto-escape", "This+is/goingto+escape==")]
-        public void UnescapeTest(string input, string expected)
+        public async Task UnescapeTest(string input, string expected)
         {
-            var base64 = new Base64Batch(logger);
-            base64.Unescape(input);
-            logger.Result.Should().Be(expected);
+            var base64 = new Base64Batch();
+            await base64.Unescape(input);
+            var read = await base64.Reader.ReadAsync();
+            read.Should().Be(expected);
         }
     }
 }

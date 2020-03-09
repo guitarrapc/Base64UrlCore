@@ -1,8 +1,6 @@
-using MicroBatchFramework;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Cocona;
 using System;
-using System.Reflection;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Base64UrlCore.Tool
@@ -10,53 +8,54 @@ namespace Base64UrlCore.Tool
     class Program
     {
         static async Task Main(string[] args) =>
-            await new HostBuilder().RunBatchEngineAsync<Base64Batch>(args);
+            await CoconaLiteApp.RunAsync<Base64Batch>(args);
     }
 
-    public class Base64Batch : BatchBase
+    public class Base64Batch
     {
-        private readonly ILogger<BatchEngine> logger;
-        public Base64Batch(ILogger<BatchEngine> logger) => this.logger = logger;
+        internal ChannelReader<string> Reader { get; }
+        private readonly Channel<string> _channel;
 
-        [Command("encode", "encode input string to base64url")]
-        public void Encode([Option(0)]string input) => logger.LogInformation(Base64Url.Encode(input));
-
-        [Command("decode", "decode input base64url to string")]
-        public void Decode([Option(0)]string input) => logger.LogInformation(Base64Url.Decode(input));
-
-        [Command("escape", "escape base64 to base64url")]
-        public void Escape([Option(0)]string input) => logger.LogInformation(Base64Url.Escape(input));
-
-        [Command("unescape", "unescape base64url to base64")]
-        public void Unescape([Option(0)]string input) => logger.LogInformation(Base64Url.Unescape(input));
-
-        /// <summary>
-        /// Provide unix style command argument: -version --version -v + version command
-        /// </summary>
-        [Command(new[] { "version", "-v", "-version", "--version" }, "show version")]
-        public void Version()
+        public Base64Batch()
         {
-            var version = Assembly.GetEntryAssembly()
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                .InformationalVersion
-                .ToString();
-            logger.LogInformation($"base64urls v{version}");
+            _channel = Channel.CreateUnbounded<string>(new UnboundedChannelOptions
+            {
+                SingleReader = true,
+                SingleWriter = true,
+            });
+            Reader = _channel.Reader;
         }
 
-        /// <summary>
-        /// Provide unix style command argument: -help --help -h + override default help / list
-        /// </summary>
-        /// <remarks>
-        /// Also override default help. no arguments execution will fallback to here.
-        /// </remarks>
-        [Command(new[] { "help", "list", "-h", "-help", "--help" }, "show help")]
-        public void Help()
+        [Command(Description = "encode input string to base64url. run this: base64urls encode \"C# is awesome.\"")]
+        public async ValueTask Encode([Argument]string input)
         {
-            logger.LogInformation("Usage: base64urls [-version] [-help] [decode|encode|escape|unescape] [args]");
-            logger.LogInformation("E.g., run this: base64urls decode QyMgaXMgYXdlc29tZQ==");
-            logger.LogInformation("E.g., run this: base64urls encode \"C# is awesome.\"");
-            logger.LogInformation("E.g., run this: base64urls escape \"This+is/goingto+escape==\"");
-            logger.LogInformation("E.g., run this: base64urls unescape \"This-is_goingto-escape\"");
+            var result = Base64Url.Encode(input);
+            await _channel.Writer.WriteAsync(result);
+            Console.WriteLine(result);
+        }
+
+        [Command(Description = "decode input base64url to string. run this: base64urls decode QyMgaXMgYXdlc29tZQ==")]
+        public async ValueTask Decode([Argument]string input)
+        {
+            var result = Base64Url.Decode(input);
+            await _channel.Writer.WriteAsync(result);
+            Console.WriteLine(result);
+        }
+
+        [Command(Description = "escape base64 to base64url. run this: base64urls escape \"This+is/goingto+escape==\"")]
+        public async ValueTask Escape([Argument]string input)
+        {
+            var result = Base64Url.Escape(input);
+            await _channel.Writer.WriteAsync(result);
+            Console.WriteLine(result);
+        }
+
+        [Command(Description = "unescape base64url to base64. run this: base64urls unescape \"This-is_goingto-escape\"")]
+        public async ValueTask Unescape([Argument]string input)
+        {
+            var result = Base64Url.Unescape(input);
+            await _channel.Writer.WriteAsync(result);
+            Console.WriteLine(result);
         }
     }
 }
